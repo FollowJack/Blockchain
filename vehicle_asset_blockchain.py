@@ -4,26 +4,11 @@ from flask import Flask
 from flask import request
 import json
 import requests
+
+from models import Block
+
+
 node = Flask(__name__)
-
-class Block:
-    def __init__(self, index, timestamp, data, previous_hash):
-        self.index = index
-        self.timestamp = timestamp
-        self.data = data
-        self.previous_hash = previous_hash
-        self.hash = self.hash_block()
-
-    def hash_block(self):
-        content_to_hash = (str(self.index) +
-                           str(self.timestamp) +
-                           str(self.data) +
-                           str(self.previous_hash))
-        return hasher.sha256(content_to_hash.encode("utf-16")).hexdigest()
-
-    def __str__(self):
-        return 'Block: ' + str(self.index) + ', data: ' + str(self.data) + ', hash: '+ str(self.hash) + ', prevHash: ' + str(self.previous_hash)
-
 
 class Blockchain:
 
@@ -32,7 +17,7 @@ class Blockchain:
         self.chain = []
         genesis_block = self.create_genesis_block()
         #self.chain.append(genesis_block)
-        # use mining 
+        # use mining
 
         #for test reason
         self.print_complete_chain()
@@ -40,24 +25,28 @@ class Blockchain:
 
     # Generate genesis block
     def create_genesis_block(self):
-        # Manually construct a block with
+        data = {
+            "VIN": None,
+            "metadata": {
+                "Owner": None,
+                "Mileage": None
+            }
+
+        }
+        # Manually construct a block
+        genesis_block = Block(0,  # index
+                              date.datetime.now(),  # timestamp
+                              data,  # data
+                              "0")  # previous hash
         # index zero and arbitrary previous hash
-        return Block(0,  # index
-                     date.datetime.now(),  # timestamp
-                     {
-                         "VIN": None,
-                         "metadata": {
-                             "Owner": None,
-                             "Mileage": None
-                         }
+        return genesis_block
 
-                     },  # data
-                     "0")  # previous hash
-
-    def add_create_block(self):
-
-        return
-
+    def add_create_block(self, data, last_block):
+        this_index = last_block.index + 1
+        this_timestamp = date.datetime.now()
+        this_data = data
+        this_hash = last_block.hash
+        return Block(this_index, this_timestamp, this_data, this_hash)
 
     # create block
     """def add_new_block(self):
