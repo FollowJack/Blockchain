@@ -11,4 +11,5 @@ class StateMachine:
         # maybe we need here some kind
         # of message digest
 
+
     # transaction validation should be regulated
