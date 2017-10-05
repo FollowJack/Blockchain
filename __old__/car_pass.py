@@ -1,4 +1,3 @@
-from vehicle_asset_blockchain import Block
 from vehicle_asset_blockchain import Blockchain
 
 class CarPass:
@@ -30,6 +29,11 @@ class CarPass:
     def set_mileage(self, vin, mileage):
         return
 
+    def get_cars(self):
+        cars = self.blockchain
+        return
+
 
 carpass = CarPass()
 carpass.add_car('1234567890123456', 'Karthick', 0)
+carpass.get_cars()

@@ -4,40 +4,74 @@ from flask import Flask
 from flask import request
 import json
 import requests
+
+from model.models import Block
+
+
 node = Flask(__name__)
 
-class Block:
-    def __init__(self, index, timestamp, data, previous_hash):
-        self.index = index
-        self.timestamp = timestamp
-        self.data = data
-        self.previous_hash = previous_hash
-        self.hash = self.hash_block()
-
-    def hash_block(self):
-        content_to_hash = (str(self.index) +
-                           str(self.timestamp) +
-                           str(self.data) +
-                           str(self.previous_hash))
-        return hasher.sha256(content_to_hash.encode("utf-16")).hexdigest()
+class Blockchain:
 
 
-# Generate genesis block
-def create_genesis_block():
-    # Manually construct a block with
-    # index zero and arbitrary previous hash
-    return Block(0, date.datetime.now(), {
-    "proof-of-work": 9,
-    "transactions": None
-    }, "0")
+    def __init__(self):
+        self.chain = []
+        genesis_block = self.create_genesis_block()
+        #self.chain.append(genesis_block)
+        # use mining
 
+        #for test reason
+        self.print_complete_chain()
+        return
 
+    # Generate genesis block
+    def create_genesis_block(self):
+        data = {
+            "VIN": None,
+            "metadata": {
+                "Owner": None,
+                "Mileage": None
+            }
 
+        }
+        # Manually construct a block
+        genesis_block = Block(0,  # index
+                              date.datetime.now(),  # timestamp
+                              data,  # data
+                              "0")  # previous hash
+        # index zero and arbitrary previous hash
+        return genesis_block
+
+    def add_create_block(self, data, last_block):
+        this_index = last_block.index + 1
+        this_timestamp = date.datetime.now()
+        this_data = data
+        this_hash = last_block.hash
+        return Block(this_index, this_timestamp, this_data, this_hash)
+
+    # create block
+    """def add_new_block(self):
+        new_index = self.chain[-1] + 1;
+
+        block = Block(new_index, timestamp, data, previous_hash)
+
+        # add to chain
+        added_block = self.blockchain.add_new_block(block)
+
+        # mine new block
+        self.blockchain.mine(added_block)
+        return
+    """
+    # helper method
+    def print_complete_chain(self):
+        for block in self.chain:
+            print(str(block) + ', ')
+
+"""
 # A completely random address of the owner of this node
 miner_address = "q3nf394hjg-random-miner-address-34nf3i4nflkn3oi"
 # This node's blockchain copy
 blockchain = []
-blockchain.append(create_genesis_block())
+#blockchain.append(create_genesis_block())
 # Store the transactions that
 # this node has in a list
 this_nodes_transactions = []
@@ -185,3 +219,4 @@ def mine():
         }) + "\n"
 
 node.run()
+"""
