@@ -26,3 +26,6 @@ class FullNode:
         # no 2/3 reached --> propose new validator and next round
         # The proposer for the given round takes a batch of recently received transactions from its local cache (the Mempool
         # composes a block, and broadcasts a signed ProposalMsg con- taining the block.
+
+    # validate block
+        # If a validator does not receive a correct proposal within ProposalTimeout, it pre-votes for nil instead.
